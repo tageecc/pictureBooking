@@ -8,6 +8,7 @@ var OrderSchema = new mongoose.Schema({
     bg_color:String,/*底色*/
     make_up:Boolean,/*是否化妆*/
     known_from:String,/*哪里获知我们*/
+    date:String,/*预约时间*/
     create_at: {
         type: Date,
         default: new Date().toLocaleString()
