@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title><%= setting.title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+      <script>
+          var during_time='<%setting.during_time%>';//预约间隔时间
+      </script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1><%= setting.title %></h1>
+
+    ...
+
+    <!--预约时间-->
+    <% var earliest = setting.earliest_date %>
+    <% var among = setting.latest_date-setting.earliest_date %>
+    <% for(var i=1;i<=among;i++){ %>
+    <% var date = new Date(new Date().getTime()+(early++)*24*60*60*1000) %>
+    <span><%=date.getMonth()+1%>月<%=date.getDate()%>日</span>
+    <%}%>
+    <!--/预约时间-->
   </body>
 </html>
