@@ -8,17 +8,198 @@
       </script>
   </head>
   <body>
-    <h1><%= setting.title %></h1>
-
-    ...
-
-    <!--预约时间-->
-    <% var earliest = setting.earliest_date %>
-    <% var among = setting.latest_date-setting.earliest_date %>
-    <% for(var i=1;i<=among;i++){ %>
-    <% var date = new Date(new Date().getTime()+(early++)*24*60*60*1000) %>
-    <span><%=date.getMonth()+1%>月<%=date.getDate()%>日</span>
-    <%}%>
-    <!--/预约时间-->
+    <h1></h1>
   </body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=false"/>
+  <title><%= setting.title %></title>
+  <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="col-sm-11 col-md-11">
+    <div class="row">
+      <form role="form">
+        <div class="form-group">
+          <label for="nickname">姓名</label>
+          <input type="text" class="form-control" id="nickname" name="nickname" placeholder="姓名信息用于电子底片的信息检索"
+                 required>
+        </div>
+        <div class="form-group">
+          <label for="department">单位/学院</label>
+          <input type="text" class="form-control" id="department" name="department" placeholder="请输入具体的单位或学院"
+                 required>
+        </div>
+        <div class="form-group">
+          <label for="phone">联系电话</label>
+          <input type="text" class="form-control" id="phone" name="phone" placeholder="联系电话用于电子底片的保存信息检索"
+                 required>
+        </div>
+        <div class="form-group">
+          <label for="email">邮箱</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="邮箱用于电子底片的发送"
+                 required>
+        </div>
+        <div class="form-group">
+          <label>用途选择</label>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="purpose" value="">
+              求职简历
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="purpose" value="">
+              考试报名
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="purpose" value="">
+              驾照
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="purpose" value="">
+              学生证、员工卡
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="purpose" value="">
+              护照签证
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="purpose" value="">
+              结婚登记照
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="purpose" value="">
+              其他
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>尺寸选择</label>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="photo_size" value="">
+              标准1寸8张
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="photo_size" value="">
+              标准2寸6张
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="photo_size" value="">
+              结婚登记照
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="photo_size" value="">
+              护照/签证
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="">
+              其他
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>底色选择</label>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="background-color" value="">
+              白色
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="background-color" value="">
+              蓝色
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="background-color" value="">
+              红色（结婚登记照）
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="background-color" value="">
+              其他
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>化妆</label>
+
+          <div class="radio">
+            <label>
+              <input type="radio" name="has_makeup" value="true">
+              淡雅妆容（20元）
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="has_makeup" value="false" checked>
+              无化妆
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>预约时间</label>
+            <!--预约时间-->
+            <%if(setting.earliest_date){%>
+                <% var earliest = setting.earliest_date %>
+                <% var among = setting.latest_date-setting.earliest_date %>
+                <% for(var i=1;i<=among;i++){ %>
+                <% var date = new Date(new Date().getTime()+(early++)*24*60*60*1000) %>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="bookTime" value="0900" checked>
+                        <span><%=date.getMonth()+1%>月<%=date.getDate()%>日</span>
+                    </label>
+                </div>
+
+                <%}%>
+            <%}%>
+
+            <!--/预约时间-->
+        </div>
+        <div class="form-group">
+          <label for="remark">备注</label>
+          <textarea class="form-control" rows="3" id="remark"></textarea>
+        </div>
+        <button class="btn btn-primary">提交</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+</body>
 </html>
