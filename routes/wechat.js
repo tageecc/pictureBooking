@@ -4,6 +4,7 @@ var request = require('request');
 var qs = require('querystring');
 var router = express.Router();
 var User = require('../model/User');
+var Setting = require('../model/Setting');
 
 var token = "picbook4wechat";
 var appid = 'wxb2b6de7e5f4788a5';
@@ -32,6 +33,46 @@ function getAccess_token() {
     })
 }
 
+function isUserExist(_openid) {
+    return new Promise(function (resolve, reject) {
+        User.findOne({openid: _openid}, function (err, user) {
+            if (err) reject('获取用户信息失败，请检查网络设置');
+            if (!user) {
+                User.create({
+                    openid: _openid
+                }, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                })
+            }
+            else {
+                resolve();
+            }
+        })
+    });
+}
+
+function getSetting() {
+    return new Promise(function (resolve, reject) {
+        Setting.find({}, function (err, settings) {
+            if (err) {
+                reject('获取配置信息失败！请检查网络设置。');
+                return false;
+            }
+            if (settings && settings.length > 0) {
+                resolve(settings[0]);
+            } else {
+                reject('内部修整中，敬请期待！')
+            }
+        });
+    });
+
+}
+
 router.get('/', function (req, res, next) {
     var signature = req.query.signature;
     var timestamp = req.query.timestamp;
@@ -57,7 +98,7 @@ router.get('/code', function (req, res, next) {
     var _url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
         appid +
         '&redirect_uri=' +
-        encodeURIComponent('http://cs.diviniti.cn/wechat/token') +
+        encodeURIComponent('http://www.tagee.cc/wechat/token') +
         '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
     res.redirect(_url);
 });
@@ -77,27 +118,24 @@ router.get('/token', function (req, res, next) {
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var result = JSON.parse(body);
-
-            //res.redirect('/user/' + result.openid + "?access_token=" + result.access_token);//获取用户信息
-            User.findOne({openid: result.openid}, function (err, user) {
-                if (err) console.error(err);
-                if (!user) {
-                    User.create({
-                        openid: result.openid
-                    }, function (err) {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            res.render('index',{title:'',openid:result.openid,setting:{}});
-                        }
+            isUserExist()
+                .then(
+                    function () {
+                        return getSetting();
+                    },
+                    function (err) {
+                        res.render('error', {error: err});
+                        return false;
                     })
-                }
-                else{
-                    res.render('index',{title:'',openid:result.openid,setting:{}});
-                }
+                .then(
+                    function (openid, setting) {
+                        res.render('index', {setting: setting, openid: openid})
+                    },
+                    function (err) {
+                        res.render('error', {error: err});
+                        return false;
+                    })
 
-            })
         }
     })
 });
