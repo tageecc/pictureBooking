@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Admin = require('../model/Admin');
+var SettingService = require('../service/SettingService');
 
 
 function adminRequired(req, res, next) {
@@ -12,16 +13,20 @@ function adminRequired(req, res, next) {
 }
 
 router.get('/', function (req, res, next) {
-    res.render('login');
+    if (req.session.admin) {
+        res.render('admin', {setting: SettingService.getSetting()});
+    } else {
+        res.render('login');
+    }
+
 });
 
 router.post('/login', function (req, res, next) {
     var _username = req.body.username;
     var _password = req.body.password;
-    var _code=req.body.code;
-    console.log(_username,_password);
-    if(+_code!=req.session.code){
-        res.json({code:-1,msg:'验证码输入错误！'});
+    var _code = req.body.code;
+    if (+_code != req.session.code) {
+        res.json({code: -1, msg: '验证码输入错误！'});
         return false;
     }
     Admin.findOne({name: _username, passwd: _password}, function (err, admin) {
@@ -31,10 +36,10 @@ router.post('/login', function (req, res, next) {
         }
         if (admin) {
             req.session.admin = admin;
-            res.json({code:1});
+            res.json({code: 1});
         } else {
             req.session.admin = null;
-            res.json({code:-1,msg: '用户名或密码错误！'});
+            res.json({code: -1, msg: '用户名或密码错误！'});
         }
     })
 });

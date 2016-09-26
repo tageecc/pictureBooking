@@ -1,45 +1,129 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>后台信息管理</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-</head>
+<% include head.html %>
+
 <body>
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span12">
-            <h3>
-                后台管理
-            </h3>
-            <div class="tabbable tabs-left" id="tabs-477686">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a data-toggle="tab" href="#panel-207923">配置信息</a>
-                    </li>
-                    <li>
-                        <a data-toggle="tab" href="#panel-201358">第二部分</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="panel-207923">
-                        <p>
-                            第一部分内容.
-                        </p>
-                    </div>
-                    <div class="tab-pane" id="panel-201358">
-                        <p>
-                            第二部分内容.
-                        </p>
+<div class="alert alert-danger"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-9 col-lg-offset-2">
+            <div class="span12">
+                <div class="page-header">
+                    <h1>
+                        后台管理页面
+                        <small></small>
+                    </h1>
+                </div>
+                <div class="tabbable tabs-left" id="tabs-657411">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#panel-895036" data-toggle="tab">基本配置</a>
+                        </li>
+                        <li>
+                            <a href="#panel-500986" data-toggle="tab">修改配置</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="panel-895036">
+                            <form id="setting_form" role="form">
+                                <fieldset disabled>
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                配置项
+                                            </th>
+                                            <th>
+                                                配置信息
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                网站标题
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" value="<%= setting.title %>">
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                最早申请开放时间(天)
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                       value="<%= setting.earliest_date %>">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                最晚申请开放时间(天)
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                       value="<%= setting.latest_date %>">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                当天最早申请开放时间(小时)
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                       value="<%= setting.earliest_time %>">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                当天最晚申请开放时间(小时)
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                       value="<%= setting.latest_time %>">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                预约申请时间间隔(分钟)
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                       value="<%= setting.during_time %>">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                单位时间内可预约人数
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                       value="<%= setting.during_number %>">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </fieldset>
+                            </form>
+                            <a href="javascript:" class="editor-setting">修改配置</a>
+
+                            <button type="button" data-loading-text="保存中..." class="btn btn-primary save-setting">保存配置
+                            </button>
+                        </div>
+                        <div class="tab-pane" id="panel-500986">
+                            <p>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $('.editor-setting').on('click', function () {
+        $('#setting_form fieldset').removeAttr('disabled');
+        $('.save-setting').fadeIn();
+    })
+</script>
 </body>
 </html>
