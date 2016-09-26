@@ -1,4 +1,4 @@
-<% include head.html %>
+<% include header.html %>
 
 <body>
 <div class="alert alert-danger">登录失败，请检查用户名或密码！</div>
@@ -71,20 +71,6 @@
         });
         return false;
     });
-
-    function fromToJson(form) {
-        var result = {};
-        var fieldArray = $('#' + form).serializeArray();
-        for (var i = 0; i < fieldArray.length; i++) {
-            var field = fieldArray[i];
-            if (field.name in result) {
-                result[field.name] += ',' + field.value;
-            } else {
-                result[field.name] = field.value;
-            }
-        }
-        return result;
-    }
 </script>
 </body>
 </html>

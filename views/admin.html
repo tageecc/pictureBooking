@@ -1,4 +1,4 @@
-<% include head.html %>
+<% include header.html %>
 
 <body>
 <div class="alert alert-danger"></div>
@@ -42,7 +42,8 @@
                                                 网站标题
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" value="<%= setting.title %>">
+                                                <input type="text" class="form-control" name="title"
+                                                       value="<%= setting.title %>" required>
                                             </td>
 
                                         </tr>
@@ -51,8 +52,8 @@
                                                 最早申请开放时间(天)
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control"
-                                                       value="<%= setting.earliest_date %>">
+                                                <input type="number" name="earliest_date" class="form-control"
+                                                       value="<%= setting.earliest_date %>" required>
                                             </td>
                                         </tr>
                                         <tr>
@@ -60,8 +61,8 @@
                                                 最晚申请开放时间(天)
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control"
-                                                       value="<%= setting.latest_date %>">
+                                                <input type="number" class="form-control" name="latest_date"
+                                                       value="<%= setting.latest_date %>" required>
                                             </td>
                                         </tr>
                                         <tr>
@@ -69,8 +70,8 @@
                                                 当天最早申请开放时间(小时)
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control"
-                                                       value="<%= setting.earliest_time %>">
+                                                <input type="number" class="form-control" name="earliest_time"
+                                                       value="<%= setting.earliest_time %>" required>
                                             </td>
                                         </tr>
                                         <tr>
@@ -78,8 +79,8 @@
                                                 当天最晚申请开放时间(小时)
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control"
-                                                       value="<%= setting.latest_time %>">
+                                                <input type="number" class="form-control" name="latest_time"
+                                                       value="<%= setting.latest_time %>" required>
                                             </td>
                                         </tr>
                                         <tr>
@@ -87,8 +88,8 @@
                                                 预约申请时间间隔(分钟)
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control"
-                                                       value="<%= setting.during_time %>">
+                                                <input type="number" class="form-control" name="during_time"
+                                                       value="<%= setting.during_time %>" required>
                                             </td>
                                         </tr>
                                         <tr>
@@ -96,8 +97,8 @@
                                                 单位时间内可预约人数
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control"
-                                                       value="<%= setting.during_number %>">
+                                                <input type="number" class="form-control" name="during_number"
+                                                       value="<%= setting.during_number %>" required>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -120,10 +121,25 @@
     </div>
 </div>
 <script>
+    /*点击编辑模式*/
     $('.editor-setting').on('click', function () {
         $('#setting_form fieldset').removeAttr('disabled');
         $('.save-setting').fadeIn();
-    })
+    });
+    /*保存配置信息*/
+    $('.save-setting').on('click', function () {
+        var $btn = $(this).button('loading');
+        $.ajax({
+            type: "POST",
+            url: "/admin/editor_setting",
+            data: fromToJson('setting_form'),
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            }
+        });
+        return false;
+    });
 </script>
 </body>
 </html>

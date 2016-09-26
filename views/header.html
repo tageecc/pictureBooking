@@ -48,4 +48,19 @@
     </style>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        function fromToJson(form) {
+            var result = {};
+            var fieldArray = $('#' + form).serializeArray();
+            for (var i = 0; i < fieldArray.length; i++) {
+                var field = fieldArray[i];
+                if (field.name in result) {
+                    result[field.name] += ',' + field.value;
+                } else {
+                    result[field.name] = field.value;
+                }
+            }
+            return result;
+        }
+    </script>
 </head>
