@@ -5,7 +5,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=false"/>
     <title>网上预约 | 青山</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <script src="js/lib/"></script>
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
+    <style>
+        .appoint-date {
+            padding: 10px 0;
+            border: 2px;
+            box-shadow: 0 0 2px rgb(0, 0, 0);
+            text-align: center;
+        }
+
+        .appoint-date.active {
+            background-color: #3071a9;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -160,6 +173,32 @@
 <div class="form-group">
     <label>预约时间</label>
 
+    <div class="row">
+        <span class="col-xs-2 col-sm-2 col-md-2 appoint-date active">
+            2
+            <input type="hidden" value="2"/>
+        </span>
+        <span class="col-xs-2 col-sm-2 col-md-2 appoint-date">
+            3
+            <input type="hidden" value="3"/>
+        </span>
+        <span class="col-xs-2 col-sm-2 col-md-2 appoint-date">
+            4
+            <input type="hidden" value="4"/>
+        </span>
+        <span class="col-xs-2 col-sm-2 col-md-2 appoint-date">
+            5
+            <input type="hidden" value="5"/>
+        </span>
+        <span class="col-xs-2 col-sm-2 col-md-2 appoint-date">
+            6
+            <input type="hidden" value="6"/>
+        </span>
+        <span class="col-xs-2 col-sm-2 col-md-2 appoint-date">
+            7
+            <input type="hidden" value="7"/>
+        </span>
+    </div>
 
     <div class="radio">
         <label>
@@ -232,5 +271,12 @@
 
 </div>
 </div>
+<script>
+    $('.appoint-date').on('click',function(e){
+        e.preventDefault();
+        $('.appoint-date').removeClass('active');
+        $(this).addClass('active');
+    })
+</script>
 </body>
 </html>
