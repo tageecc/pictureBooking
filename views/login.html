@@ -1,0 +1,76 @@
+<% include header.html %>
+
+<body>
+<div class="alert alert-danger">登录失败，请检查用户名或密码！</div>
+<div class="container">
+    <form id="form" class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post"
+          onsubmit="return false;">
+        <fieldset>
+            <legend>用户登录</legend>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="username">用户名</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名"
+                           autocomplete="off" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="password">密码</label>
+                <div class="col-sm-9">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码"
+                           autocomplete="off"
+                           required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="verification_code">验证码</label>
+                <div class="col-sm-9">
+                    <img class="checkCode" src="/verification_code?width=100&height=20"/>
+                    <input type="text" class="form-control" id="verification_code" name="code"
+                           placeholder="请输入验证码" autocomplete="off" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button id="submit" type="submit" class="btn btn-primary" data-loading-text="正在登录...">登录
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script>
+    $('#submit').on('click', function () {
+        var pwd = $('#password');
+        pwd.val($.md5(pwd.val()));
+        var $btn = $(this).button('loading');
+        $.ajax({
+            type: "POST",
+            url: "/admin/login",
+            data: fromToJson('form'),
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    $btn.button('reset');
+                    window.location.href = '/admin';
+                } else {
+                    $('.alert').text(data.msg).slideDown('fast', function () {
+
+                        var code_img = $('.checkCode');
+                        code_img.attr('src', code_img.attr('src') + '?d=' + new Date().getTime());
+
+                        setTimeout(function () {
+                            $('.alert').slideUp('fast');
+                            $btn.button('reset');
+                        }, 1000);
+
+                    });
+                }
+            }
+        });
+        return false;
+    });
+</script>
+</body>
+</html>
