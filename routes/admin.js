@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 var Admin = require('../model/Admin');
 
+
 function adminRequired(req, res, next) {
     var admin = req.session.admin;
-    console.log("admin:" + admin);
     if (!admin) {
         return res.redirect('/login.html')
     }
@@ -18,6 +18,12 @@ router.get('/', function (req, res, next) {
 router.post('/login', function (req, res, next) {
     var _username = req.body.username;
     var _password = req.body.password;
+    var _code=req.body.code;
+    console.log(_username,_password);
+    if(+_code!=req.session.code){
+        res.json({code:-1,msg:'验证码输入错误！'});
+        return false;
+    }
     Admin.findOne({name: _username, passwd: _password}, function (err, admin) {
         if (err) {
             console.error(err);
@@ -25,10 +31,10 @@ router.post('/login', function (req, res, next) {
         }
         if (admin) {
             req.session.admin = admin;
-            res.render('admin');
+            res.json({code:1});
         } else {
             req.session.admin = null;
-            res.render('error', {msg: '用户名或密码错误！'});
+            res.json({code:-1,msg: '用户名或密码错误！'});
         }
     })
 });

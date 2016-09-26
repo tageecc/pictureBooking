@@ -1,5 +1,3 @@
-'use strict';
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -9,8 +7,8 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo/es5')(session);//把会话信息存储在数据库
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var dburl = require('./config/dbConf');
-mongoose.connect(dburl.dbUrl);//连接mongodb数据库
+var dbConf = require('./config/dbConf');
+mongoose.connect(dbConf.dbUrl);//连接mongodb数据库
 
 var app = express();
 
@@ -26,9 +24,9 @@ app.use(cookieParser());
 
 //提供会话支持，设置 store 参数为 MongoStore 实例，把会话信息存储到数据库中
 app.use(session({
-  secret: dburl.cookieSecret,
+  secret: dbConf.cookieSecret,
   store: new MongoStore({
-    url: dburl.dbUrl,
+    url: dbConf.dbUrl,
     collection: 'sessions'
   }),
   resave: false,
@@ -39,6 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/book', require('./routes/book'));
 app.use('/wechat', require('./routes/wechat'));
+app.use('/admin', require('./routes/admin'));
+app.use('/verification_code', require('./routes/verification_code'));
 
 
 
