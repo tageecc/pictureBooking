@@ -9,7 +9,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo/es5')(session);//把会话信息存储在数据库
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var dburl = require('./config/dburl');
+var dburl = require('./config/dbConf');
 mongoose.connect(dburl.dbUrl);//连接mongodb数据库
 
 var app = express();
