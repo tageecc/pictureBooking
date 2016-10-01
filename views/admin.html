@@ -1,7 +1,7 @@
 <% include header.html %>
 
 <body>
-<div class="alert alert-danger"></div>
+<div class="alert alert-success"></div>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-9 col-lg-offset-2">
@@ -67,7 +67,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                当天最早申请开放时间(小时)
+                                                当天最早申请开放时间(24小时制)
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control" name="earliest_time"
@@ -76,7 +76,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                当天最晚申请开放时间(小时)
+                                                当天最晚申请开放时间(24小时制)
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control" name="latest_time"
@@ -136,6 +136,14 @@
             dataType: "json",
             success: function (data) {
                 console.log(data);
+                if(data.code==1){
+                    $btn.button('reset');
+                    $('.alert').text('保存成功！').slideDown('fast').delay(2000).queue(function () {
+                        $(this).slideUp('fast').dequeue();
+                    });
+                    $('#setting_form fieldset').attr('disabled','');
+                    $('.save-setting').fadeOut();
+                }
             }
         });
         return false;

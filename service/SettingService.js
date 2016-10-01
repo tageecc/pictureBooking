@@ -31,3 +31,15 @@ exports.saveSetting = function (setting) {
         });
     });
 };
+exports.updateSetting = function (setting) {
+    return new Promise(function (resolve, reject) {
+        Setting.update({},setting, function (err, setting) {
+            if (err) {
+                reject('保存配置失败，请检查网络设置！');
+                return false;
+            } else {
+                resolve(setting);
+            }
+        });
+    });
+};

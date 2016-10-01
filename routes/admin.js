@@ -6,25 +6,18 @@ var SettingService = require('../service/SettingService');
 
 function adminRequired(req, res, next) {
     if (!req.session.admin) {
-        return res.redirect('/login.html');
+        return res.render('login', {title: '123'});
     }
     next()
 }
 
-router.get('/', function (req, res, next) {
-    if (req.session.admin) {
-        SettingService.getSetting().then(function (setting) {
-            res.render('admin', {setting: setting});
-        }, function (err) {
-            res.render('error', {err: err});
-        });
-
-    } else {
-        res.render('login');
-    }
-
+router.get('/', adminRequired, function (req, res, next) {
+    SettingService.getSetting().then(function (setting) {
+        res.render('admin', {setting: setting,title:setting.title});
+    }, function (err) {
+        res.render('error', {err: err});
+    });
 });
-
 router.post('/login', function (req, res, next) {
     var _username = req.body.username;
     var _password = req.body.password;
@@ -49,7 +42,7 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/editor_setting', adminRequired, function (req, res, next) {
-    SettingService.saveSetting({
+    SettingService.updateSetting({
         title: req.body.title,
         earliest_date: req.body.earliest_date,
         latest_date: req.body.latest_date,
