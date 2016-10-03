@@ -18,7 +18,7 @@
                             <a href="#panel-895036" data-toggle="tab">基本配置</a>
                         </li>
                         <li>
-                            <a href="#panel-500986" data-toggle="tab">修改配置</a>
+                            <a href="#panel-500986" id="j_all_order" data-toggle="tab">所有订单</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -111,8 +111,22 @@
                             </button>
                         </div>
                         <div class="tab-pane" id="panel-500986">
-                            <p>
-                            </p>
+                            <table class="table table-bordered table-hover" id="tb_all_order">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>姓名</th>
+                                    <th>单位/学院</th>
+                                    <th>手机号</th>
+                                    <th>用途</th>
+                                    <th>尺寸</th>
+                                    <th>化妆</th>
+                                    <th>预约时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -135,18 +149,39 @@
             data: fromToJson('setting_form'),
             dataType: "json",
             success: function (data) {
-                if(data.code==1){
+                if (data.code == 1) {
                     $btn.button('reset');
                     $('.alert').text('保存成功！').slideDown('fast').delay(2000).queue(function () {
                         $(this).slideUp('fast').dequeue();
                     });
-                    $('#setting_form fieldset').attr('disabled','');
+                    $('#setting_form fieldset').attr('disabled', '');
                     $('.save-setting').fadeOut();
                 }
             }
         });
         return false;
     });
+
+    $('#j_all_order').on('click', function () {
+        $.getJSON('/book/all?d=' + new Date().getTime(), function (res) {
+            if (res.code == 1) {
+                var str = '';
+                res.data.forEach(function (v, i) {
+                    str += '<tr>' +
+                            '<td>' + (i+1) + '</td>' +
+                            '<td>' + v.nickname + '</td>' +
+                            '<td>' + v.department + '</td>' +
+                            '<td>' + v.phone + '</td>' +
+                            '<td>' + v.use_to + '</td>' +
+                            '<td>' + v.photo_size + '</td>' +
+                            '<td>' + v.is_makeup + '</td>' +
+                            '<td>' + v.date + '</td>' +
+                            '</tr>'
+                });
+                $('#tb_all_order tbody').html(str);
+            }
+        })
+    })
 </script>
 </body>
 </html>

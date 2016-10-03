@@ -138,13 +138,13 @@
 
                     <div class="radio">
                         <label>
-                            <input type="radio" name="is_makeup" value="true" checked>
+                            <input type="radio" name="is_makeup" value="淡雅妆容（20元）" checked>
                             淡雅妆容（20元）
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="is_makeup" value="false">
+                            <input type="radio" name="is_makeup" value="无化妆">
                             无化妆
                         </label>
                     </div>
@@ -259,10 +259,6 @@
             return false;
         }
         order.date = date;
-
-
-        console.log(order);
-
 
         $.ajax({
             type: 'POST',

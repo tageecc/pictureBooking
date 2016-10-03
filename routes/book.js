@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../model/User');
-var Order = require('../model/Order');
+var OrderService = require('../service/OrderService');
 /*
  /*时段，*/
 /*支付*/
@@ -28,16 +28,32 @@ router.post('/add/user', userinfoVerification, orderinfoVerification, function (
 
 });
 router.post('/add', orderinfoVerification, function (req, res, next) {
-    /*保存用户信息*/
-    Order.create(req.order, function (err, order) {
-        if (err) {
-            res.json({code: -1, msg: '预定失败！'});
-        } else {
-            res.json({code: 1, msg: '预定成功！'});
-        }
+    OrderService.addOrder(req.order).then(function () {
+        res.json({code: 1, msg: '预定成功！'});
+    }, function () {
+        res.json({code: -1, msg: '预定失败！'});
     })
 
 });
+
+router.get('/all',adminRequire, function (req, res, next) {
+    OrderService.getAllOrder().then(function (orders) {
+        console.log(2);
+        res.json({code: 1, msg: '成功！',data:orders});
+    }, function () {
+        console.log(1);
+        res.json({code: -1, msg: '获取失败！'});
+    })
+
+});
+
+function adminRequire(req, res, next) {
+    if (!req.session.admin) {
+        return res.json({code: -1, msg: '需要登录！'});
+    }
+    next()
+}
+
 /*验证订单信息*/
 function orderinfoVerification(req, res, next) {
     var order = {};
@@ -90,8 +106,12 @@ function orderinfoVerification(req, res, next) {
     }
     order.is_makeup = req.body.is_makeup;
 
+    if (!(req.body.date && req.body.date.length > 0)) {
+        res.json({code: '-1', msg: 'date参数错误！'});
+        return false;
+    }
+    order.date = req.body.date;
     req.order = order;
-    console.log(order);
     next();
 }
 
