@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var UserSchema = new mongoose.Schema({
     openid: String,
-    name: String,
+    nickname: String,
     sex: String,
     phone: Number,
     mail:String,

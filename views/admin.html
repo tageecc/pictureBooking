@@ -135,7 +135,6 @@
             data: fromToJson('setting_form'),
             dataType: "json",
             success: function (data) {
-                console.log(data);
                 if(data.code==1){
                     $btn.button('reset');
                     $('.alert').text('保存成功！').slideDown('fast').delay(2000).queue(function () {

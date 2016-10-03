@@ -52,10 +52,12 @@ router.get('/token', function (req, res, next) {
     };
     request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            var result = JSON.parse(body);
+            var result = JSON.parse(body), _isExist;
+            console.log(result);
             UserService.isUserExist(result.openid)
                 .then(
-                    function () {
+                    function (isExist) {
+                        /*用户不存在则保存用户openid,返回false*/
                         return SettingService.getSetting();
                     },
                     function (err) {
@@ -63,8 +65,13 @@ router.get('/token', function (req, res, next) {
                         return false;
                     })
                 .then(
-                    function (openid, setting) {
-                        res.render('index', {setting: setting, openid: openid})
+                    function (setting) {
+                        res.render('index', {
+                            title: setting.title,
+                            isExist: _isExist,
+                            setting: setting,
+                            openid: result.openid
+                        })
                     },
                     function (err) {
                         res.render('error', {error: err});

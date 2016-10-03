@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head lang="zh-cn">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=false"/>
-    <title><%= setting.title %></title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script>
-        var during_time = '<%setting.during_time%>';//预约间隔时间
-    </script>
-</head>
+<% include header.html %>
 <body>
-<div class="container">
+<div class="alert alert-success"></div>
+<div class="container" id="openid" data-openid="<%=openid%>">
     <div class="col-sm-11 col-md-11">
         <div class="row">
-            <form role="form">
+            <form role="form" id="form" onsubmit="return false;">
                 <div class="form-group">
                     <label for="nickname">姓名</label>
                     <input type="text" class="form-control" id="nickname" name="nickname" placeholder="姓名信息用于电子底片的信息检索"
@@ -39,43 +30,43 @@
 
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="purpose" value="">
+                            <input type="checkbox" name="use_to" value="求职简历">
                             求职简历
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="purpose" value="">
+                            <input type="checkbox" name="use_to" value="考试报名">
                             考试报名
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="purpose" value="">
+                            <input type="checkbox" name="use_to" value="驾照">
                             驾照
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="purpose" value="">
+                            <input type="checkbox" name="use_to" value="学生证、员工卡">
                             学生证、员工卡
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="purpose" value="">
+                            <input type="checkbox" name="use_to" value="护照签证">
                             护照签证
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="purpose" value="">
+                            <input type="checkbox" name="use_to" value="结婚登记照">
                             结婚登记照
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="purpose" value="">
+                            <input type="checkbox" name="use_to" value="其他">
                             其他
                         </label>
                     </div>
@@ -85,31 +76,31 @@
 
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="photo_size" value="">
+                            <input type="checkbox" name="photo_size" value="标准1寸8张">
                             标准1寸8张
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="photo_size" value="">
+                            <input type="checkbox" name="photo_size" value="标准2寸6张">
                             标准2寸6张
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="photo_size" value="">
+                            <input type="checkbox" name="photo_size" value="结婚登记照">
                             结婚登记照
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="photo_size" value="">
+                            <input type="checkbox" name="photo_size" value="护照/签证">
                             护照/签证
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" value="">
+                            <input type="checkbox" value="其他">
                             其他
                         </label>
                     </div>
@@ -119,25 +110,25 @@
 
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="background-color" value="">
+                            <input type="checkbox" name="bg_color" value="白色">
                             白色
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="background-color" value="">
+                            <input type="checkbox" name="bg_color" value="蓝色">
                             蓝色
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="background-color" value="">
+                            <input type="checkbox" name="bg_color" value="红色（结婚登记照）">
                             红色（结婚登记照）
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="background-color" value="">
+                            <input type="checkbox" name="bg_color" value="其他">
                             其他
                         </label>
                     </div>
@@ -147,18 +138,17 @@
 
                     <div class="radio">
                         <label>
-                            <input type="radio" name="has_makeup" value="true">
+                            <input type="radio" name="is_makeup" value="true" checked>
                             淡雅妆容（20元）
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="has_makeup" value="false" checked>
+                            <input type="radio" name="is_makeup" value="false">
                             无化妆
                         </label>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>预约时间</label>
                     <!--预约时间-->
@@ -166,10 +156,10 @@
                     <% var earliest = setting.earliest_date %>
                     <% var among = setting.latest_date-setting.earliest_date %>
                     <% for(var i=1;i<=among;i++){ %>
-                    <% var date = new Date(new Date().getTime()+(early++)*24*60*60*1000) %>
+                    <% var date = new Date(new Date().getTime()+(earliest++)*24*60*60*1000) %>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="bookTime" value="0900" checked>
+                            <input type="radio" name="date" value="<%=date.getMonth()+1%>月<%=date.getDate()%>日">
                             <span><%=date.getMonth()+1%>月<%=date.getDate()%>日</span>
                         </label>
                     </div>
@@ -183,9 +173,136 @@
                     <label for="remark">备注</label>
                     <textarea class="form-control" rows="3" id="remark"></textarea>
                 </div>
-                <button class="btn btn-primary">提交</button>
+                <div class="form-group">
+                    <button id="btn_post" class="btn btn-primary">提交</button>
+                </div>
+
             </form>
         </div>
-
     </div>
 </div>
+<script>
+    /*表单验证*/
+    $('#btn_post').on('click', function () {
+        var order = {};
+
+        var openid = $('#openid').attr('data-openid');
+        if (!openid.length > 0) {
+            Mesage('openid信息错误！');
+            return false;
+        }
+        order.openid = openid;
+        alert(openid);
+
+        var nickname = $('#nickname').val();
+        if (!nickname.length > 0) {
+            Mesage('请输入姓名！');
+            return false;
+        }
+        order.nickname = nickname;
+
+        var department = $('#department').val();
+        if (!department.length > 0) {
+            Mesage('请输入单位/学院！');
+            return false;
+        }
+        order.department = department;
+
+        var phone = $('#phone').val();
+        if (!(phone.length > 0 && /^1[34578]\d{9}$/.test(phone))) {
+            Mesage('请输入正确的手机号！');
+            return false;
+        }
+        order.phone = phone;
+
+        var email = $('#email').val();
+        if (!(email.length > 0 && /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/.test(email))) {
+            Mesage('请输入正确的邮箱！');
+            return false;
+        }
+        order.email = email;
+
+        var use_to = getCheckBox('use_to');
+        if (!use_to.length > 0) {
+            Mesage('请选择用途！');
+            return false;
+        }
+        order.use_to = use_to;
+
+        var photo_size = getCheckBox('photo_size');
+        if (!photo_size.length > 0) {
+            Mesage('请选择尺寸！');
+            return false;
+        }
+        order.photo_size = photo_size;
+
+        var bg_color = getCheckBox('bg_color');
+        if (!bg_color.length > 0) {
+            Mesage('请选择底色！');
+            return false;
+        }
+        order.bg_color = bg_color;
+
+        var is_makeup = getCheckBox('is_makeup');
+        if (!is_makeup.length > 0) {
+            Mesage('请选择是否化妆！');
+            return false;
+        }
+        order.is_makeup = is_makeup;
+
+        order.remark = $("#remark").val();
+
+
+        var date = getCheckBox('date');
+        if (!date.length > 0) {
+            Mesage('请选择时间！');
+            return false;
+        }
+        order.date = date;
+
+
+        console.log(order);
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/book/add',
+            data: order,
+            dataType: 'json',
+            success: function (res) {
+                alert(res.msg);
+            }
+        });
+    });
+
+    function Mesage(msg, err) {
+        if (!err) {
+            $('.alert').addClass('alert-danger').text(msg).slideDown('fast').delay(2000).queue(function () {
+                $(this).slideUp('fast', function () {
+                    $(this).removeClass('alert-danger');
+                }).dequeue();
+            });
+        } else {
+            $('.alert').text(msg).slideDown('fast').delay(2000).queue(function () {
+                $(this).slideUp('fast').dequeue();
+            });
+        }
+
+    }
+
+    function getCheckBox(name) {
+        var res = '';
+        var input = $("input[name='" + name + "']:checked");
+        var len = input.length;
+        input.each(function (i, item) {
+            if (i == (len - 1)) {
+                res += $(item).val();
+            } else {
+                res += $(item).val() + "|";
+            }
+        });
+        return res;
+    }
+</script>
+</body>
+</html>
