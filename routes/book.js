@@ -36,10 +36,10 @@ router.post('/add', orderinfoVerification, function (req, res, next) {
 
 });
 
-router.get('/all',adminRequire, function (req, res, next) {
+router.get('/all', adminRequire, function (req, res, next) {
     OrderService.getAllOrder().then(function (orders) {
         console.log(2);
-        res.json({code: 1, msg: '成功！',data:orders});
+        res.json({code: 1, msg: '成功！', data: orders});
     }, function () {
         console.log(1);
         res.json({code: -1, msg: '获取失败！'});
@@ -111,6 +111,11 @@ function orderinfoVerification(req, res, next) {
         return false;
     }
     order.date = req.body.date;
+
+    order.remark = req.body.remark;
+
+    console.log(order);
+    
     req.order = order;
     next();
 }
