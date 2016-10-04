@@ -111,6 +111,10 @@
                             </button>
                         </div>
                         <div class="tab-pane" id="panel-500986">
+                            <div class="input-group search">
+                                <input type="text" class="form-control pull-right search-input"><span
+                                    class="input-group-addon btn search-btn">搜索</span>
+                            </div>
                             <table class="table table-bordered table-hover" id="tb_all_order">
                                 <thead>
                                 <tr>
@@ -125,6 +129,9 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <nav>
+                                <ul id="j_page" class="pagination"></ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -252,9 +259,40 @@
                             '</tr>'
                 });
                 $('#tb_all_order tbody').html(str);
+
+                Page(res);
             }
-        })
+        });
     });
+
+    /*分页器*/
+    function Page(res) {
+        var page_str = '';
+        if (res.page == 1) {
+            page_str += '<li class="disabled"><a href="javascript:">&laquo;</a></li>';
+        } else {
+            page_str += '<li><a data-page="' + (res.page - 1) + '" href="javascript:">&laquo;</a></li>';
+        }
+        for (var p = 1; p <= res.total; p++) {
+
+            if (p == res.page) {
+                page_str += '<li class="active"><a href="javascript:">' + p + '</a></li>';
+            } else {
+                page_str += '<li><a data-page="' + p + '" href="javascript:">' + p + '</a></li>';
+            }
+        }
+        if (res.page == res.total) {
+            page_str += '<li class="disabled"><a href="#">&raquo;</a>';
+        } else {
+            page_str += '<li><a data-page="' + (res.page + 1) + '" href="#">&raquo;</a>';
+        }
+        $('#j_page').html(page_str);
+    }
+    $('#j_page').on('click', 'a', function () {
+        if ($(this).parent().hasClass('disabled')) return false;
+        console.log($(this).attr('data-page'));
+    });
+
     /*订单详情*/
     $('#tb_all_order').on('click', '.order-info', function () {
         var _id = $(this).attr('data-orderId');
@@ -294,8 +332,32 @@
             if (res.code == 1) {
                 $('#j_all_order').click();
                 $('#order_info').modal('toggle');
+                Mesage(res.msg, 1);
             } else {
+                Mesage(res.msg);
+            }
+        })
+    });
 
+    /*搜索*/
+    $('.search-btn').on('click', function () {
+        var key = $('.search-input').val();
+        if (key.length == 0) return false;
+        $.getJSON('/book/search/' + key, function (res) {
+            if (res.code == 1) {
+                var str = '';
+                res.data.forEach(function (v, i) {
+                    var status_str = v.status == 0 ? '未确认' : (v.status == 1 ? '已确认' : '已完成');
+                    str += '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td>' + v.nickname + '</td>' +
+                            '<td>' + v.phone + '</td>' +
+                            '<td>' + v.datetime + '</td>' +
+                            '<td>' + status_str + '</td>' +
+                            '<td><button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-xs order-info">详情</button></td>' +
+                            '</tr>'
+                });
+                $('#tb_all_order tbody').html(str);
             }
         })
     })

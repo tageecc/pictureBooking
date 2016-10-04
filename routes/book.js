@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../model/User');
 var OrderService = require('../service/OrderService');
+var MailService = require('../service/MailService');
 /*
  /*时段，*/
 /*支付*/
@@ -37,10 +38,17 @@ router.post('/add', orderinfoVerification, function (req, res, next) {
 });
 
 router.get('/all', adminRequire, function (req, res, next) {
-    OrderService.getAllOrder().then(function (orders) {
-        res.json({code: 1, msg: '成功！', data: orders});
-    }, function () {
-        res.json({code: -1, msg: '获取失败！'});
+    OrderService.getAllOrder(req.query.page, req.query.perPage, function (orders, page, perPage, count) {
+        res.json({
+            code: 1,
+            msg: '获取成功！',
+            data: orders,
+            page: page,
+            perPage: perPage,
+            total: Math.ceil(count / perPage)
+        });
+    }, function (err) {
+        res.json({code: -1, msg: err});
     })
 
 });
@@ -51,16 +59,29 @@ router.get('/:oid', adminRequire, function (req, res, next) {
     }, function () {
         res.json({code: -1, msg: '获取失败！'});
     })
-
 });
 
 router.get('/order/:oid/status/:sid', adminRequire, function (req, res, next) {
     OrderService.updateOrderStatus(req.params.oid, req.params.sid).then(function (orders) {
+        if (req.params.sid == 1) {
+            console.log(1);
+            MailService.sendMail('896932646@qq.com', '你好', '<span>已确认，请准时</span>')
+        } else if (req.params.sid == 2) {
+            MailService.sendMail('896932646@qq.com', '你好', '<span>已完成，合作愉快</span>')
+        }
         res.json({code: 1, msg: '成功！', data: orders});
     }, function () {
         res.json({code: -1, msg: '获取失败！'});
     })
+});
 
+router.get('/search/:key', adminRequire, function (req, res, next) {
+    OrderService.findOrderByKey(req.params.key).then(function (orders) {
+        res.json({code: 1, msg: '成功！', data: orders});
+    }, function (err) {
+        console.log(err);
+        res.json({code: -1, msg: '获取失败！'});
+    })
 });
 
 function adminRequire(req, res, next) {

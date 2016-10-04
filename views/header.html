@@ -19,7 +19,7 @@
             top: 0;
             width: 100%;
             display: none;
-            z-index:1000;
+            z-index: 9999;
         }
 
         .checkCode {
@@ -46,6 +46,18 @@
             right: 0;
             display: none;
         }
+
+        .search {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            width: 285px;
+        }
+
+        .search input.search-input {
+            transition: .23s all;
+            width: 150px;
+        }
     </style>
     <script>
         function fromToJson(form) {
@@ -60,6 +72,20 @@
                 }
             }
             return result;
+        }
+        function Mesage(msg, err) {
+            if (!err) {
+                $('.alert').addClass('alert-danger').text(msg).slideDown('fast').delay(2000).queue(function () {
+                    $(this).slideUp('fast', function () {
+                        $(this).removeClass('alert-danger');
+                    }).dequeue();
+                });
+            } else {
+                $('.alert').text(msg).slideDown('fast').delay(2000).queue(function () {
+                    $(this).slideUp('fast').dequeue();
+                });
+            }
+
         }
     </script>
 </head>

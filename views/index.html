@@ -278,21 +278,6 @@
         });
     });
 
-    function Mesage(msg, err) {
-        if (!err) {
-            $('.alert').addClass('alert-danger').text(msg).slideDown('fast').delay(2000).queue(function () {
-                $(this).slideUp('fast', function () {
-                    $(this).removeClass('alert-danger');
-                }).dequeue();
-            });
-        } else {
-            $('.alert').text(msg).slideDown('fast').delay(2000).queue(function () {
-                $(this).slideUp('fast').dequeue();
-            });
-        }
-
-    }
-
     function getCheckBox(name) {
         var res = '';
         var input = $("input[name='" + name + "']:checked");
