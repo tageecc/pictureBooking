@@ -203,11 +203,11 @@
             <div class="modal-footer">
                 <span class="pull-left text-info">状态修改后将默认向客户发送邮件或短信通知</span>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary save-order-status" disabled="disabled">保存</button>
+                <button id="save_order_status" type="button" class="btn btn-primary" disabled="disabled">保存</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+    </div>
+</div>
 <script>
     /*点击编辑模式*/
     $('.editor-setting').on('click', function () {
@@ -248,7 +248,7 @@
                             '<td>' + v.phone + '</td>' +
                             '<td>' + v.datetime + '</td>' +
                             '<td>' + status_str + '</td>' +
-                            '<td><button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-sm order-info">详情</button></td>' +
+                            '<td><button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-xs order-info">详情</button></td>' +
                             '</tr>'
                 });
                 $('#tb_all_order tbody').html(str);
@@ -273,6 +273,7 @@
                 $('#m_remark').text(res.data.remark);
                 $('#m_status').val(res.data.status).attr('data-status', res.data.status);
 
+                $('#save_order_status').attr('data-orderId', _id);
                 $('#order_info').modal('toggle');
             }
         })
@@ -282,11 +283,21 @@
     $('#m_status').change(function () {
         var status = $(this).attr('data-status');
         if ($(this).find("option:selected").index() != status) {
-            $('.save-order-status').removeAttr('disabled');
+            $('#save_order_status').removeAttr('disabled');
         } else {
-            $('.save-order-status').attr('disabled','disabled');
+            $('#save_order_status').attr('disabled', 'disabled');
         }
+    });
+    $('#save_order_status').on('click', function () {
+        var oid = $(this).attr('data-orderId'), status = $('#m_status option:selected').index();
+        $.getJSON('/book/order/' + oid + '/status/' + status, function (res) {
+            if (res.code == 1) {
+                $('#j_all_order').click();
+                $('#order_info').modal('toggle');
+            } else {
 
+            }
+        })
     })
 </script>
 </body>

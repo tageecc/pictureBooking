@@ -54,6 +54,15 @@ router.get('/:oid', adminRequire, function (req, res, next) {
 
 });
 
+router.get('/order/:oid/status/:sid', adminRequire, function (req, res, next) {
+    OrderService.updateOrderStatus(req.params.oid, req.params.sid).then(function (orders) {
+        res.json({code: 1, msg: '成功！', data: orders});
+    }, function () {
+        res.json({code: -1, msg: '获取失败！'});
+    })
+
+});
+
 function adminRequire(req, res, next) {
     if (!req.session.admin) {
         return res.json({code: -1, msg: '需要登录！'});
@@ -122,7 +131,7 @@ function orderinfoVerification(req, res, next) {
     order.remark = req.body.remark;
 
     console.log(order);
-    
+
     req.order = order;
     next();
 }
