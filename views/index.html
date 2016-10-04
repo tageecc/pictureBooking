@@ -159,9 +159,19 @@
                     <% var date = new Date(new Date().getTime()+(earliest++)*24*60*60*1000) %>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="date" value="<%=date.getMonth()+1%>月<%=date.getDate()%>日">
-                            <span><%=date.getMonth()+1%>月<%=date.getDate()%>日</span>
+                            <span id="j_date"><%=date.getMonth()+1%>月<%=date.getDate()%>日</span>
                         </label>
+                        <div class="radio time">
+                            <%var during_time=setting.during_time/60,earliest_time=setting.earliest_time,latest_time=setting.latest_time;%>
+                            <%for(var j=0,t=0;(t=earliest_time+j*during_time)<=latest_time;j++){%>
+                            <label>
+                                <input id="j_time" type="radio" name="date"
+                                       value="t">
+                                <%var num = (t-parseInt(t))*60;%>
+                                <span><%=parseInt(t)%>:<%=num?num:num+'0'%></span>
+                            </label>
+                            <%}%>
+                        </div>
                     </div>
 
                     <%}%>
