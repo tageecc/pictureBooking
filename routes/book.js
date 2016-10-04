@@ -38,10 +38,17 @@ router.post('/add', orderinfoVerification, function (req, res, next) {
 
 router.get('/all', adminRequire, function (req, res, next) {
     OrderService.getAllOrder().then(function (orders) {
-        console.log(2);
         res.json({code: 1, msg: '成功！', data: orders});
     }, function () {
-        console.log(1);
+        res.json({code: -1, msg: '获取失败！'});
+    })
+
+});
+
+router.get('/:oid', adminRequire, function (req, res, next) {
+    OrderService.getOrder(req.params.oid).then(function (orders) {
+        res.json({code: 1, msg: '成功！', data: orders});
+    }, function () {
         res.json({code: -1, msg: '获取失败！'});
     })
 
@@ -106,11 +113,11 @@ function orderinfoVerification(req, res, next) {
     }
     order.is_makeup = req.body.is_makeup;
 
-    if (!(req.body.date && req.body.date.length > 0)) {
-        res.json({code: '-1', msg: 'date参数错误！'});
+    if (!(req.body.datetime && req.body.datetime.length > 0)) {
+        res.json({code: '-1', msg: 'datetime参数错误！'});
         return false;
     }
-    order.date = req.body.date;
+    order.datetime = req.body.datetime;
 
     order.remark = req.body.remark;
 

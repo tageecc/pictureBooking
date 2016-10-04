@@ -254,21 +254,18 @@
         order.bg_color = bg_color;
 
         var is_makeup = getCheckBox('is_makeup');
-        if (!is_makeup.length > 0) {
-            Mesage('请选择是否化妆！');
-            return false;
-        }
-        order.is_makeup = is_makeup;
+
+
 
         order.remark = $("#remark").val();
 
 
-        var date = getCheckBox('date');
-        if (!date.length > 0) {
+        var datetime = getCheckBox('date');
+        if (!datetime.length > 0) {
             Mesage('请选择时间！');
             return false;
         }
-        order.date = date;
+        order.datetime = datetime;
 
         $.ajax({
             type: 'POST',

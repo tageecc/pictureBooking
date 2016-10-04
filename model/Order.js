@@ -11,8 +11,12 @@ var OrderSchema = new mongoose.Schema({
     photo_size:String,/*图片尺寸*/
     bg_color:String,/*底色*/
     is_makeup:Boolean,/*是否化妆*/
-    date:String,/*预约时间*/
+    datetime:String,/*预约时间*/
     remark:String,
+    status:{
+        type:Number,
+        default:0
+    },/*订单状态 0 未确认，1 已确认，2 已完成*/
     create_at: {
         type: Date,
         default: new Date().toLocaleString()

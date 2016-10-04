@@ -116,12 +116,10 @@
                                 <tr>
                                     <th>序号</th>
                                     <th>姓名</th>
-                                    <th>单位/学院</th>
                                     <th>手机号</th>
-                                    <th>用途</th>
-                                    <th>尺寸</th>
-                                    <th>化妆</th>
                                     <th>预约时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -134,6 +132,82 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="order_info">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>项目名</th>
+                    <th>项目信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>姓名</td>
+                    <td><span id="m_nickname"></span></td>
+                </tr>
+                <tr>
+                    <td>单位/学院</td>
+                    <td><span id="m_department"></span></td>
+                </tr>
+                <tr>
+                    <td>手机</td>
+                    <td><span id="m_phone"></span></td>
+                </tr>
+                <tr>
+                    <td>邮箱</td>
+                    <td><span id="m_email"></span></td>
+                </tr>
+                <tr>
+                    <td>用途</td>
+                    <td><span id="m_use_to"></span></td>
+                </tr>
+                <tr>
+                    <td>图片尺寸</td>
+                    <td><span id="m_photo_size"></span></td>
+                </tr>
+                <tr>
+                    <td>底色</td>
+                    <td><span id="m_bg_color"></span></td>
+                </tr>
+                <tr>
+                    <td>是否化妆</td>
+                    <td><span id="m_is_makeup"></span></td>
+                </tr>
+                <tr>
+                    <td>预约时间</td>
+                    <td><span id="m_datetime"></span></td>
+                </tr>
+                <tr>
+                    <td>备注</td>
+                    <td><span id="m_remark"></span></td>
+                </tr>
+                <tr>
+                    <td>状态</td>
+                    <td>
+                        <select id="m_status" class="form-control">
+                            <option value="0">未确认</option>
+                            <option value="1">已确认</option>
+                            <option value="2">已完成</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <span class="pull-left text-info">状态修改后将默认向客户发送邮件或短信通知</span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary save-order-status" disabled="disabled">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script>
     /*点击编辑模式*/
     $('.editor-setting').on('click', function () {
@@ -161,26 +235,58 @@
         });
         return false;
     });
-
+    /*获取所有订单*/
     $('#j_all_order').on('click', function () {
         $.getJSON('/book/all?d=' + new Date().getTime(), function (res) {
             if (res.code == 1) {
                 var str = '';
                 res.data.forEach(function (v, i) {
+                    var status_str = v.status == 0 ? '未确认' : (v.status == 1 ? '已确认' : '已完成');
                     str += '<tr>' +
-                            '<td>' + (i+1) + '</td>' +
+                            '<td>' + (i + 1) + '</td>' +
                             '<td>' + v.nickname + '</td>' +
-                            '<td>' + v.department + '</td>' +
                             '<td>' + v.phone + '</td>' +
-                            '<td>' + v.use_to + '</td>' +
-                            '<td>' + v.photo_size + '</td>' +
-                            '<td>' + v.is_makeup + '</td>' +
-                            '<td>' + v.date + '</td>' +
+                            '<td>' + v.datetime + '</td>' +
+                            '<td>' + status_str + '</td>' +
+                            '<td><button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-sm order-info">详情</button></td>' +
                             '</tr>'
                 });
                 $('#tb_all_order tbody').html(str);
             }
         })
+    });
+    /*订单详情*/
+    $('#tb_all_order').on('click', '.order-info', function () {
+        var _id = $(this).attr('data-orderId');
+        $.getJSON('/book/' + _id, function (res) {
+            if (res.code == 1) {
+
+                $('#m_nickname').text(res.data.nickname);
+                $('#m_department').text(res.data.department);
+                $('#m_phone').text(res.data.phone);
+                $('#m_email').text(res.data.email);
+                $('#m_use_to').text(res.data.use_to);
+                $('#m_photo_size').text(res.data.photo_size);
+                $('#m_bg_color').text(res.data.bg_color);
+                $('#m_is_makeup').text(res.data.is_makeup);
+                $('#m_datetime').text(res.data.datetime);
+                $('#m_remark').text(res.data.remark);
+                $('#m_status').val(res.data.status).attr('data-status', res.data.status);
+
+                $('#order_info').modal('toggle');
+            }
+        })
+    });
+
+    /*修改订单状态*/
+    $('#m_status').change(function () {
+        var status = $(this).attr('data-status');
+        if ($(this).find("option:selected").index() != status) {
+            $('.save-order-status').removeAttr('disabled');
+        } else {
+            $('.save-order-status').attr('disabled','disabled');
+        }
+
     })
 </script>
 </body>

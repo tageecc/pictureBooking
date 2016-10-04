@@ -17,12 +17,25 @@ exports.addOrder = function (order) {
     });
 };
 
+
+exports.getOrder = function (oid) {
+    return new Promise(function (resolve, reject) {
+        Order.findOne({_id:oid}, function (err, order) {
+            if (err) {
+                reject();
+            } else {
+                resolve(order);
+            }
+        })
+    });
+};
+
 /**
  * 获取所有订单
  */
 exports.getAllOrder = function () {
     return new Promise(function (resolve, reject) {
-        Order.find({}, function (err, orders) {
+        Order.find({},'_id nickname phone datetime status', function (err, orders) {
             if (err) {
                 reject();
             } else {
