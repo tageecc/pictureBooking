@@ -158,7 +158,7 @@
                         <% var among = setting.latest_date-setting.earliest_date %>
                         <% for(var i=1;i<=among;i++){ %>
                         <% var date = new Date(new Date().getTime()+(earliest++)*24*60*60*1000) %>
-                        <button type="button" class="btn lab-date" id="j_date">
+                        <button type="button" class="btn lab-datetime lab-date" id="j_date">
                             <%=date.getMonth()+1%>月<%=date.getDate()%>日
                         </button>
                         <div class="time-select">
@@ -166,7 +166,7 @@
                             during_time=setting.during_time/60,earliest_time=setting.earliest_time,latest_time=setting.latest_time;%>
                             <%for(var j=0,t=0;(t=earliest_time+j*during_time)<=latest_time;j++){%>
                             <%var num = (t-parseInt(t))*60;%>
-                            <button type="button" class="btn btn-sm lab-time"><%=parseInt(t)%>:<%=num?num:num+'0'%>
+                            <button type="button" class="btn btn-sm lab-datetime lab-time"><%=parseInt(t)%>:<%=num?num:num+'0'%>
                             </button>
                             <%}%>
                         </div>
@@ -304,6 +304,7 @@
             dataType: 'json',
             success: function (res) {
                 alert(res.msg);
+                window.location.reload(true);
             }
         });
     });
