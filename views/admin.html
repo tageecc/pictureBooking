@@ -242,9 +242,10 @@
         });
         return false;
     });
-    /*获取所有订单*/
-    $('#j_all_order').on('click', function () {
-        $.getJSON('/book/all?d=' + new Date().getTime(), function (res) {
+
+    /*分页器*/
+    function Page(page) {
+        $.getJSON('/book/all?page=' + page + '&d=' + new Date().getTime(), function (res) {
             if (res.code == 1) {
                 var str = '';
                 res.data.forEach(function (v, i) {
@@ -260,38 +261,42 @@
                 });
                 $('#tb_all_order tbody').html(str);
 
-                Page(res);
+
+                if (res.total == 1) return false;
+
+                var page_str = '';
+                if (res.page == 1) {
+                    page_str += '<li class="disabled"><a href="javascript:">&laquo;</a></li>';
+                } else {
+                    page_str += '<li><a data-page="' + (parseInt(res.page) - 1) + '" href="javascript:">&laquo;</a></li>';
+                }
+                for (var p = 1; p <= res.total; p++) {
+
+                    if (p == res.page) {
+                        page_str += '<li class="active"><a href="javascript:">' + p + '</a></li>';
+                    } else {
+                        page_str += '<li><a data-page="' + p + '" href="javascript:">' + p + '</a></li>';
+                    }
+                }
+                if (res.page == res.total) {
+                    page_str += '<li class="disabled"><a href="#">&raquo;</a>';
+                } else {
+                    page_str += '<li><a data-page="' + (parseInt(res.page) + 1) + '" href="#">&raquo;</a>';
+                }
+                $('#j_page').html(page_str);
             }
         });
-    });
-
-    /*分页器*/
-    function Page(res) {
-        var page_str = '';
-        if (res.page == 1) {
-            page_str += '<li class="disabled"><a href="javascript:">&laquo;</a></li>';
-        } else {
-            page_str += '<li><a data-page="' + (res.page - 1) + '" href="javascript:">&laquo;</a></li>';
-        }
-        for (var p = 1; p <= res.total; p++) {
-
-            if (p == res.page) {
-                page_str += '<li class="active"><a href="javascript:">' + p + '</a></li>';
-            } else {
-                page_str += '<li><a data-page="' + p + '" href="javascript:">' + p + '</a></li>';
-            }
-        }
-        if (res.page == res.total) {
-            page_str += '<li class="disabled"><a href="#">&raquo;</a>';
-        } else {
-            page_str += '<li><a data-page="' + (res.page + 1) + '" href="#">&raquo;</a>';
-        }
-        $('#j_page').html(page_str);
     }
+    /*获取所有订单*/
+    $('#j_all_order').on('click', function () {
+        Page(1);
+    });
     $('#j_page').on('click', 'a', function () {
         if ($(this).parent().hasClass('disabled')) return false;
-        console.log($(this).attr('data-page'));
+        Page($(this).attr('data-page'));
+        return false;
     });
+
 
     /*订单详情*/
     $('#tb_all_order').on('click', '.order-info', function () {
