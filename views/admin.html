@@ -1,5 +1,4 @@
 <% include header.html %>
-
 <body>
 <div class="alert alert-success"></div>
 <div class="container">
@@ -123,7 +122,7 @@
                                     <th>手机号</th>
                                     <th>预约时间</th>
                                     <th>状态</th>
-                                    <th>操作</th>
+                                    <th class="opation">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -144,8 +143,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span></button>
-                <h4 class="modal-title">Modal title</h4>
+                        class="sr-only">关闭</span></button>
+                <h4 class="modal-title">订单详情</h4>
             </div>
             <table class="table table-bordered table-hover">
                 <thead>
@@ -215,6 +214,21 @@
         </div>
     </div>
 </div>
+<div id="order_del" class="modal fade">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>警告</h3>
+    </div>
+    <div class="modal-body">
+        <h4>您正在删除一条订单</h4>
+        <p>此操作不能撤销，确认删除此订单吗？</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-danger">确认删除</a>
+        <a href="#" class="btn" data-dismiss="modal">关闭</a>
+    </div>
+</div>
+<script src="/js/jquery-confirm.min.js"></script>
 <script>
     /*点击编辑模式*/
     $('.editor-setting').on('click', function () {
@@ -256,13 +270,16 @@
                             '<td>' + v.phone + '</td>' +
                             '<td>' + v.datetime + '</td>' +
                             '<td>' + status_str + '</td>' +
-                            '<td><button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-xs order-info">详情</button></td>' +
+                            '<td>' +
+                            '<button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-xs order-info">详情</button>' +
+                            '<button data-orderId="' + v._id + '" type="button" class="btn btn-danger btn-xs order-del">删除</button>' +
+                            '</td>' +
                             '</tr>'
                 });
                 $('#tb_all_order tbody').html(str);
 
 
-                if (res.total == 1) return false;
+                if (res.total < 2) return false;
 
                 var page_str = '';
                 if (res.page == 1) {
@@ -321,6 +338,26 @@
             }
         })
     });
+    /*删除订单*/
+    $('#tb_all_order').on('click', '.order-del', function () {
+        var _id = $(this).attr('data-orderId');
+        $.confirm({
+            title: '<strong>警告!</strong>',
+            confirmButton: '确认删除',
+            confirmButtonClass: 'btn-danger',
+            cancelButton: '取消',
+            content: '您正在删除一条订单，此操作无法撤销，确认删除吗？',
+            confirm: function () {
+                $.getJSON('/book/del/' + _id, function (res) {
+                    if (res.code == 1) {
+                        $.alert({content: '删除成功！', confirmButton: '关闭'});
+                        $('#j_all_order').click();
+                    }
+                })
+            }
+        });
+
+    });
 
     /*修改订单状态*/
     $('#m_status').change(function () {
@@ -359,7 +396,10 @@
                             '<td>' + v.phone + '</td>' +
                             '<td>' + v.datetime + '</td>' +
                             '<td>' + status_str + '</td>' +
-                            '<td><button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-xs order-info">详情</button></td>' +
+                            '<td>' +
+                            '<button data-orderId="' + v._id + '" type="button" class="btn btn-info btn-xs order-info">详情</button>' +
+                            '<button data-orderId="' + v._id + '" type="button" class="btn btn-danger btn-xs order-info">删除</button>' +
+                            '</td>' +
                             '</tr>'
                 });
                 $('#tb_all_order tbody').html(str);

@@ -1,5 +1,5 @@
 var Order = require('../model/Order');
-
+var SettingService = require('../service/SettingService');
 /**
  * 添加订单
  * @param order {String}
@@ -32,6 +32,21 @@ exports.getOrder = function (oid) {
         })
     });
 };
+/**
+ * 删除订单
+ * @param oid
+ */
+exports.delOrder = function (oid) {
+    return new Promise(function (resolve, reject) {
+        Order.remove({_id: oid}, function (err) {
+            if (err) {
+                reject();
+            } else {
+                resolve();
+            }
+        })
+    });
+};
 
 /**
  * 根据关键词搜索订单
@@ -57,6 +72,38 @@ exports.findOrderByKey = function (key) {
                 }
             })
         }
+
+    });
+};
+/**
+ * 获取当天不可预约时间段
+ * @param date
+ */
+exports.getTimeByDate = function (date) {
+    var _date = new RegExp(date);
+    return new Promise(function (resolve, reject) {
+        Order.find({datetime: _date}, 'datetime', function (err, datetime) {
+            if (err) {
+                reject(err);
+            } else {
+                var times = [], map = {};
+                datetime.forEach(function (v, i) {
+                    v = v.datetime;
+                    if (map[v]) map[v]++;
+                    else map[v] = 1;
+                });
+                SettingService.getSettingDuringNumber().then(function (num) {
+                    for (var t in map) {
+                        if (map[t] >= num) {
+
+                            times.push(t.split(' ')[1])
+                        }
+                    }
+                    resolve(times);
+                });
+
+            }
+        })
 
     });
 };

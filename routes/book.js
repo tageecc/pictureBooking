@@ -60,11 +60,24 @@ router.get('/:oid', adminRequire, function (req, res, next) {
         res.json({code: -1, msg: '获取失败！'});
     })
 });
+router.get('/del/:oid', adminRequire, function (req, res, next) {
+    OrderService.delOrder(req.params.oid).then(function () {
+        res.json({code: 1, msg: '删除成功！'});
+    }, function () {
+        res.json({code: -1, msg: '删除失败！'});
+    })
+});
+router.get('/date/:date', adminRequire, function (req, res, next) {
+    OrderService.getTimeByDate(req.params.date).then(function (times) {
+        res.json({code: 1, msg: '获取时间成功！', data: times});
+    }, function () {
+        res.json({code: -1, msg: '获取失败！'});
+    })
+});
 
 router.get('/order/:oid/status/:sid', adminRequire, function (req, res, next) {
     OrderService.updateOrderStatus(req.params.oid, req.params.sid).then(function (orders) {
         if (req.params.sid == 1) {
-            console.log(1);
             MailService.sendMail('896932646@qq.com', '你好', '<span>已确认，请准时</span>')
         } else if (req.params.sid == 2) {
             MailService.sendMail('896932646@qq.com', '你好', '<span>已完成，合作愉快</span>')
@@ -100,7 +113,6 @@ function orderinfoVerification(req, res, next) {
         return false;
     }
     order.openid = req.body.openid;
-    console.log(req.body.openid);
     if (!(req.body.nickname && req.body.nickname.length > 0)) {
         res.json({code: '-1', msg: '姓名信息错误！'});
         return false;
@@ -151,7 +163,6 @@ function orderinfoVerification(req, res, next) {
 
     order.remark = req.body.remark;
 
-    console.log(order);
 
     req.order = order;
     next();
@@ -165,7 +176,6 @@ function userinfoVerification(req, res, next) {
         return false;
     }
     user.openid = req.body.openid;
-    console.log(req.body.openid);
     if (!(req.body.nickname && req.body.nickname.length > 0)) {
         res.json({code: '-1', msg: '姓名信息错误！'});
         return false;
@@ -191,7 +201,6 @@ function userinfoVerification(req, res, next) {
         return false;
     }
     user.department = req.body.department;
-    console.log(user);
     req.user = user;
 
     next();

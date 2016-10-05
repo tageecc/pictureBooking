@@ -151,32 +151,28 @@
                 </div>
                 <div class="form-group">
                     <label>预约时间</label>
-                    <!--预约时间-->
-                    <%if(setting.earliest_date){%>
-                    <% var earliest = setting.earliest_date %>
-                    <% var among = setting.latest_date-setting.earliest_date %>
-                    <% for(var i=1;i<=among;i++){ %>
-                    <% var date = new Date(new Date().getTime()+(earliest++)*24*60*60*1000) %>
-                    <div class="radio">
-                        <label>
-                            <span id="j_date"><%=date.getMonth()+1%>月<%=date.getDate()%>日</span>
-                        </label>
-                        <div class="radio time">
-                            <%var during_time=setting.during_time/60,earliest_time=setting.earliest_time,latest_time=setting.latest_time;%>
+                    <div class="datetime-select clearfix">
+                        <!--预约时间-->
+                        <%if(setting.earliest_date){%>
+                        <% var earliest = setting.earliest_date %>
+                        <% var among = setting.latest_date-setting.earliest_date %>
+                        <% for(var i=1;i<=among;i++){ %>
+                        <% var date = new Date(new Date().getTime()+(earliest++)*24*60*60*1000) %>
+                        <button type="button" class="btn lab-date" id="j_date">
+                            <%=date.getMonth()+1%>月<%=date.getDate()%>日
+                        </button>
+                        <div class="time-select">
+                            <%var
+                            during_time=setting.during_time/60,earliest_time=setting.earliest_time,latest_time=setting.latest_time;%>
                             <%for(var j=0,t=0;(t=earliest_time+j*during_time)<=latest_time;j++){%>
-                            <label>
-                                <input id="j_time" type="radio" name="date"
-                                       value="t">
-                                <%var num = (t-parseInt(t))*60;%>
-                                <span><%=parseInt(t)%>:<%=num?num:num+'0'%></span>
-                            </label>
+                            <%var num = (t-parseInt(t))*60;%>
+                            <button type="button" class="btn btn-sm lab-time"><%=parseInt(t)%>:<%=num?num:num+'0'%>
+                            </button>
                             <%}%>
                         </div>
+                        <%}%>
+                        <%}%>
                     </div>
-
-                    <%}%>
-                    <%}%>
-
                     <!--/预约时间-->
                 </div>
                 <div class="form-group">
@@ -192,6 +188,33 @@
     </div>
 </div>
 <script>
+
+    /*时间选择*/
+    $(document).on('click', '.lab-time', function () {
+        $('.lab-time').removeClass('btn-primary');
+        $(this).addClass('btn-primary')
+    });
+    $(document).on('click', '.lab-date', function () {
+        var date = $.trim($(this).text()), time_select = $(this).next();
+
+        $('.lab-date,.lab-time').removeClass('btn-primary');
+        $('.time-select').stop().slideUp();
+        $(this).addClass('btn-primary');
+        time_select.stop().slideDown();
+
+        $.getJSON('/book/date/' + date + '?d=' + new Date().getTime(), function (res) {
+            if (res.code == 1) {
+                res.data.forEach(function (time, i) {
+                    time_select.find('.lab-time').each(function (j, _time) {
+                        if (time == $.trim($(_time).text())) {
+                            $(this).hide();
+                        }
+                    })
+                })
+            }
+        })
+    });
+
     /*表单验证*/
     $('#btn_post').on('click', function () {
         var order = {};
@@ -202,7 +225,6 @@
             return false;
         }
         order.openid = openid;
-        alert(openid);
 
         var nickname = $('#nickname').val();
         if (!nickname.length > 0) {
@@ -254,22 +276,30 @@
         order.bg_color = bg_color;
 
         var is_makeup = getCheckBox('is_makeup');
-
-
+        if (!is_makeup.length > 0) {
+            Mesage('请选择是否化妆！');
+            return false;
+        }
+        order.is_makeup = is_makeup;
 
         order.remark = $("#remark").val();
 
 
-        var datetime = getCheckBox('date');
-        if (!datetime.length > 0) {
+        var $date = $('.lab-date.btn-primary');
+        if (!$date.length > 0) {
+            Mesage('请选择日期！');
+            return false;
+        }
+        var $time = $date.next().find('.btn-primary');
+        if (!$time.length > 0) {
             Mesage('请选择时间！');
             return false;
         }
-        order.datetime = datetime;
+        order.datetime = new Date().getFullYear() + '年' + $.trim($date.text()) + ' ' + $.trim($time.text());
 
         $.ajax({
             type: 'POST',
-            url: '/book/add',
+            url: '/book/add?d=' + new Date().getTime(),
             data: order,
             dataType: 'json',
             success: function (res) {

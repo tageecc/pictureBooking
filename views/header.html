@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/jquery-confirm.min.css">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <style>
@@ -57,6 +57,26 @@
         .search input.search-input {
             transition: .23s all;
             width: 150px;
+        }
+        .input-group .form-control{
+            z-index:0;
+        }
+        .time-select{
+            display: none;
+            clear: both;
+        }
+        .lab-date{
+            margin:.6rem;
+            float: left;
+        }
+        .lab-time{
+            margin:.6rem;
+        }
+        .opation{
+            width: 100px;
+        }
+        .btn-info{
+            margin-right: 10px;
         }
     </style>
     <script>
