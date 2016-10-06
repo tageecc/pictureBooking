@@ -6,7 +6,7 @@ var SettingService = require('../service/SettingService');
 
 function adminRequired(req, res, next) {
     if (!req.session.admin) {
-        return res.render('login', {title: '123'});
+        return res.render('login', {title: '后台管理'});
     }
     next()
 }
