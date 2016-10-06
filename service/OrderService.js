@@ -123,7 +123,7 @@ exports.getAllOrder = function (page, perPage, resolve, reject) {
         page = 1;
     }
     if (!perPage || perPage < 1) {
-        perPage = 15;
+        perPage = 12;
     }
     Order.count(function (err, total) {
         Order.find({}, '_id nickname phone datetime status')
