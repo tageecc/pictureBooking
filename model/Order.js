@@ -10,7 +10,7 @@ var OrderSchema = new mongoose.Schema({
     use_to:String,/*用途*/
     photo_size:String,/*图片尺寸*/
     bg_color:String,/*底色*/
-    is_makeup:Boolean,/*是否化妆*/
+    is_makeup:String,/*是否化妆*/
     datetime:String,/*预约时间*/
     remark:String,
     status:{
