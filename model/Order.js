@@ -5,7 +5,7 @@ var OrderSchema = new mongoose.Schema({
     openid: String,
     nickname:String,
     department:String,
-    phone:Number,
+    phone:String,
     email:String,
     use_to:String,/*用途*/
     photo_size:String,/*图片尺寸*/

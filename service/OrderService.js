@@ -53,25 +53,15 @@ exports.delOrder = function (oid) {
  * @param {String} key
  */
 exports.findOrderByKey = function (key) {
-    var _key = new RegExp(key);
+    var _key = new RegExp(key, 'i');
     return new Promise(function (resolve, reject) {
-        if (!isNaN(key)) {
-            Order.find({$or: [{nickname: _key}, {department: _key}, {phone: _key}, {email: _key}]}, function (err, orders) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(orders);
-                }
-            })
-        } else {
-            Order.find({$or: [{nickname: _key}, {department: _key}, {email: _key}]}, function (err, orders) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(orders);
-                }
-            })
-        }
+        Order.find({$or: [{nickname: _key}, {department: _key}, {phone: _key}, {email: _key}]}, function (err, orders) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(orders);
+            }
+        })
 
     });
 };
