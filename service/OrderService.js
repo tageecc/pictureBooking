@@ -127,6 +127,7 @@ exports.getAllOrder = function (page, perPage, resolve, reject) {
     }
     Order.count(function (err, total) {
         Order.find({}, '_id nickname phone datetime status')
+            .sort({'create_at': -1})
             .skip((page - 1) * perPage)
             .limit(perPage)
             .exec(function (err, orders) {
