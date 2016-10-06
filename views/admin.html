@@ -263,7 +263,7 @@
             if (res.code == 1) {
                 var str = '';
                 res.data.forEach(function (v, i) {
-                    var status_str = v.status == 0 ? '<span class="label label-info">未确认</span>' : (v.status == 1 ? '<span class="label label-success">已确认</span>' : '<span class="label label-default">已完成</span>');
+                    var status_str = v.status == 0 ? '<span class="label label-warning">未确认</span>' : (v.status == 1 ? '<span class="label label-success">已确认</span>' : '<span class="label label-default">已完成</span>');
                     str += '<tr>' +
                             '<td>' + (i + 1) + '</td>' +
                             '<td>' + v.nickname + '</td>' +
@@ -389,7 +389,7 @@
             if (res.code == 1) {
                 var str = '';
                 res.data.forEach(function (v, i) {
-                    var status_str = v.status == 0 ? '<span class="label label-info">未确认</span>' : (v.status == 1 ? '<span class="label label-success">已确认</span>' : '<span class="label label-default">已完成</span>');
+                    var status_str = v.status == 0 ? '<span class="label label-warning">未确认</span>' : (v.status == 1 ? '<span class="label label-success">已确认</span>' : '<span class="label label-default">已完成</span>');
                     str += '<tr>' +
                             '<td>' + (i + 1) + '</td>' +
                             '<td>' + v.nickname + '</td>' +
