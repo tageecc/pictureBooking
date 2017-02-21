@@ -1,6 +1,13 @@
 <% include header.html %>
 <body>
 <div class="alert alert-success"></div>
+<div class="container-fluid logo-bar">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 text-center ">
+            <img src="/img/logo.png" alt="">
+        </div>
+    </div>
+</div>
 <div class="container" id="openid" data-openid="<%=openid%>">
     <div class="col-sm-11 col-md-11">
         <div class="row">
@@ -27,126 +34,175 @@
                 </div>
                 <div class="form-group">
                     <label>用途选择</label>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="use_to" value="求职简历">
+                                        求职简历
+                                    </label>
+                                </div>
+                            </div>
 
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="use_to" value="求职简历">
-                            求职简历
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="use_to" value="考试报名">
-                            考试报名
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="use_to" value="驾照">
-                            驾照
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="use_to" value="学生证、员工卡">
-                            学生证、员工卡
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="use_to" value="护照签证">
-                            护照签证
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="use_to" value="结婚登记照">
-                            结婚登记照
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="use_to" value="其他">
-                            其他
-                        </label>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="use_to" value="考试报名">
+                                        考试报名
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="use_to" value="驾照">
+                                        驾照
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="use_to" value="学生证、员工卡">
+                                        学生证、员工卡
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="use_to" value="护照签证">
+                                        护照签证
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="use_to" value="结婚登记照">
+                                        结婚登记照
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="use_to" value="其他">
+                                        其他
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>尺寸选择</label>
-
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="photo_size" value="标准1寸8张">
-                            标准1寸8张
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="photo_size" value="标准2寸6张">
-                            标准2寸6张
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="photo_size" value="结婚登记照">
-                            结婚登记照
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="photo_size" value="护照/签证">
-                            护照/签证
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="photo_size" value="其他">
-                            其他
-                        </label>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="photo_size" value="标准1寸8张">
+                                        标准1寸8张
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="photo_size" value="标准2寸6张">
+                                        标准2寸6张
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="photo_size" value="结婚登记照">
+                                        结婚登记照
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="photo_size" value="护照/签证">
+                                        护照/签证
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="photo_size" value="其他">
+                                        其他
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>底色选择</label>
-
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="bg_color" value="白色">
-                            白色
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="bg_color" value="蓝色">
-                            蓝色
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="bg_color" value="红色（结婚登记照）">
-                            红色（结婚登记照）
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="bg_color" value="其他">
-                            其他
-                        </label>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="bg_color" value="白色">
+                                        白色
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="bg_color" value="蓝色">
+                                        蓝色
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="bg_color" value="红色（结婚登记照）">
+                                        红色（结婚登记照）
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="checkbox row">
+                                    <label>
+                                        <input type="checkbox" name="bg_color" value="其他">
+                                        其他
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>化妆</label>
-
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="is_makeup" value="淡雅妆容（20元）" checked>
-                            淡雅妆容（20元）
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="is_makeup" value="无化妆">
-                            无化妆
-                        </label>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="radio row">
+                                    <label>
+                                        <input type="radio" name="is_makeup" value="淡雅妆容（20元）" checked>
+                                        淡雅妆容（20元）
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-4">
+                                <div class="radio row">
+                                    <label>
+                                        <input type="radio" name="is_makeup" value="无化妆">
+                                        无化妆
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
